@@ -115,7 +115,7 @@ accuracy_op = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
 EPOCHS = 120
 BATCH_SIZE = 128
-DEV_BATCH_SIZE = 500
+DEV_BATCH_SIZE = 128
 with tf.Session() as sess:
     saver = tf.train.Saver()
     sess.run(tf.initialize_all_variables())
