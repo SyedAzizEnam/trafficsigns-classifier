@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 import math
 import tensorflow as tf
 from tensorflow.contrib.layers import flatten
-
+import numpy as np
 training_file = './traffic-signs-data/train.p'
 testing_file = './traffic-signs-data/test.p'
 
