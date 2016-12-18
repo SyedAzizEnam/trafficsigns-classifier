@@ -63,8 +63,8 @@ for i in range(10):
         distorted_img[i,:,:,0] = distort_data(examples[i,:,:,0])
     print(X_train_gray.shape, distorted_img.shape)
     X_train_gray = np.vstack((X_train_gray, distorted_img))
-
-X_train_gray , X_dev_gray, y_train, y_dev = train_test_split(X_train_gray, y_train, test_size = 0.10, stratify = y_train)
+    y_train = np.vstack((y_train, y_train))
+X_train_gray , X_dev_gray, y_train, y_dev = train_test_split(X_train_gray, y_train, test_size = 0.01, stratify = y_train)
 y_train, y_dev = preprocess_target(y_train), preprocess_target(y_dev)
 
 ### Define your architecture here.
