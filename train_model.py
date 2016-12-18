@@ -133,7 +133,7 @@ with tf.Session() as sess:
     for i in range(EPOCHS):
         np.random.shuffle(index)
         np.random.shuffle(test_index)
-        if i==:
+        if i==100:
             X_train_gray = distort_data(X_train_gray)
         for step in range(steps_per_epoch):
             start, end = step*BATCH_SIZE, (step+1)*BATCH_SIZE
