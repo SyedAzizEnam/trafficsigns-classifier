@@ -61,6 +61,7 @@ for i in range(10):
     distorted_img = np.zeros(shape = examples.shape)
     for k in range(examples.shape[0]):
         distorted_img[i,:,:,0] = distort_data(examples[i,:,:,0])
+    print(X_train_gray.shape, distort_data.shape)
     X_train_gray = np.vstack((X_train_gray, distort_data))
 
 X_train_gray , X_dev_gray, y_train, y_dev = train_test_split(X_train_gray, y_train, test_size = 0.10, stratify = y_train)
