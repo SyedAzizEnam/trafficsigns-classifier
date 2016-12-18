@@ -153,4 +153,4 @@ with tf.Session() as sess:
         print("Test loss = {}".format(test_loss))
         print("Test accuracy = {}".format(test_acc))
 
-    saver.save(session, 'saved_vars')
+    saver.save(sess, 'saved_vars')
