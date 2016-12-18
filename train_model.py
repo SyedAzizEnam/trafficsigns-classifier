@@ -121,18 +121,21 @@ TEST_SIZE = X_dev_gray.shape[0]
 with tf.Session() as sess:
     saver = tf.train.Saver()
     sess.run(tf.initialize_all_variables())
-    steps_per_epoch = X_train_gray.shape[0] // BATCH_SIZE
-    num_examples = steps_per_epoch * BATCH_SIZE
     index = np.arange(X_train_gray.shape[0])
     test_index = np.arange(X_test_gray.shape[0])
     for i in range(EPOCHS):
-        np.random.shuffle(index)
-        np.random.shuffle(test_index)
         if i==30:
             distorted_img = np.zeros(shape = examples.shape)
             for k in range(X_train_gray.shape[0]):
                 distorted_img[i,:,:,0] = distort_data(examples[i,:,:,0])
-            X_train_gray = distorted_img
+            X_train_gray = np.vstack((X_train_gray, distorted_img))
+            y_train = np.hstack((y_train, y_train))
+        
+        steps_per_epoch = X_train_gray.shape[0] // BATCH_SIZE
+        num_examples = steps_per_epoch * BATCH_SIZE
+        np.random.shuffle(index)
+        np.random.shuffle(test_index)
+
         for step in range(steps_per_epoch):
             start, end = step*BATCH_SIZE, (step+1)*BATCH_SIZE
             batch_x, batch_y = X_train_gray[index[start:end]], y_train[index[start:end]]
