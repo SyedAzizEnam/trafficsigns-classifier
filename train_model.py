@@ -43,6 +43,8 @@ y_test = preprocess_target(y_test)
 ### Generate data additional (if you want to!)
 def distort_data(img):
     #Translation
+    print(img.shape)
+    row, col = img.shape
     t_sample = np.random.uniform(low=-0.1, high=0.1)
     r_sample = np.random.uniform(low=-10, high=10 )
 
