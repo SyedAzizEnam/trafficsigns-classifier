@@ -115,11 +115,10 @@ accuracy_op = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
 EPOCHS = 120
 BATCH_SIZE = 128
-DEV_BATCH_SIZE = 128
 with tf.Session() as sess:
     saver = tf.train.Saver()
     sess.run(tf.initialize_all_variables())
-    steps_per_epoch = X_train.shape[0] // BATCH_SIZE
+    steps_per_epoch = X_train_gray.shape[0] // BATCH_SIZE
     num_examples = steps_per_epoch * BATCH_SIZE
     index = np.arange(X_train_gray.shape[0])
     dev_index = np.arange(X_dev_gray.shape[0])
@@ -132,17 +131,16 @@ with tf.Session() as sess:
             start, end = step*BATCH_SIZE, (step+1)*BATCH_SIZE
             batch_x, batch_y = X_train_gray[index[start:end]], y_train[index[start:end]]
             train_loss, _ = sess.run([loss_op, train_op], feed_dict={x: batch_x, y: batch_y, keep_prob: 0.5})
-            print("Train loss = {}".format(train_loss))
-        loss, acc = sess.run([loss_op, accuracy_op], feed_dict={x: X_dev_gray[dev_index[0:DEV_BATCH_SIZE+1]], y: y_dev[0:DEV_BATCH_SIZE+1], keep_prob: 1.0})
+        loss, acc = sess.run([loss_op, accuracy_op], feed_dict={x: X_dev_gray, y: y_dev, keep_prob: 1.0})
 
         print("EPOCH {} ...".format(i+1))
         print("Train loss = {}".format(train_loss))
         print("Validation loss = {}".format(loss))
         print("Validation accuracy = {}".format(acc))
 
-        #test_loss, test_acc = sess.run([loss_op, accuracy_op], feed_dict={x: X_test_gray, y: y_test, keep_prob: 1.0})
+        test_loss, test_acc = sess.run([loss_op, accuracy_op], feed_dict={x: X_test_gray, y: y_test, keep_prob: 1.0})
 
-        #print("Test loss = {}".format(test_loss))
-        #print("Test accuracy = {}".format(test_acc))
+        print("Test loss = {}".format(test_loss))
+        print("Test accuracy = {}".format(test_acc))
 
     saver.save(session, 'saved_vars')
