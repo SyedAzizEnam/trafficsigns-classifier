@@ -115,7 +115,7 @@ train_op = opt.minimize(loss_op)
 correct_prediction = tf.equal(tf.argmax(softmax, 1), tf.argmax(y, 1))
 accuracy_op = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
-EPOCHS = 40
+EPOCHS = 60
 BATCH_SIZE = 128
 TEST_SIZE = X_dev_gray.shape[0]
 with tf.Session() as sess:
@@ -124,13 +124,13 @@ with tf.Session() as sess:
     index = np.arange(X_train_gray.shape[0])
     test_index = np.arange(X_test_gray.shape[0])
     for i in range(EPOCHS):
-        if i==30:
+        if i==50:
             distorted_img = np.zeros(shape = X_train_gray.shape)
             for k in range(X_train_gray.shape[0]):
-                distorted_img[i,:,:,0] = distort_data(examples[i,:,:,0])
+                distorted_img[i,:,:,0] = distort_data(X_train_gray[i,:,:,0])
             X_train_gray = np.vstack((X_train_gray, distorted_img))
             y_train = np.hstack((y_train, y_train))
-        
+
         steps_per_epoch = X_train_gray.shape[0] // BATCH_SIZE
         num_examples = steps_per_epoch * BATCH_SIZE
         np.random.shuffle(index)
