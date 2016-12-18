@@ -57,7 +57,7 @@ def distort_data(img):
 ### and split the data into training/validation/testing sets here.
 examples = np.copy(X_train_gray)
 for i in range(10):
-    distorted_img = np.zeroes(shape = examples.shape)
+    distorted_img = np.zeros(shape = examples.shape)
     for k in range(examples.shape[0]):
         distorted_img[i,:,:,0] = distort_data(examples[i,:,:,0])
     X_train_gray = np.vstack(X_train_gray, distort_data)
