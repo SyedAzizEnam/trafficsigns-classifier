@@ -129,9 +129,9 @@ with tf.Session() as sess:
         np.random.shuffle(index)
         np.random.shuffle(test_index)
         if i==30:
-            distorted_img = np.zeros(shape = examples.shape)
+            distorted_img = np.zeros(shape = X_train_gray.shape)
             for k in range(X_train_gray.shape[0]):
-                distorted_img[i,:,:,0] = distort_data(examples[i,:,:,0])
+                distorted_img[i,:,:,0] = distort_data(X_train_gray[i,:,:,0])
             X_train_gray = distorted_img
         for step in range(steps_per_epoch):
             start, end = step*BATCH_SIZE, (step+1)*BATCH_SIZE
