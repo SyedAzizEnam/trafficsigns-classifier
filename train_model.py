@@ -151,6 +151,7 @@ with tf.Session() as sess:
         print("Test accuracy = {}".format(test_acc))
 
         EPOCH += 1
+        threshold += 1
         if best_acc < acc:
             threshold = 0
             saver.save(sess, 'saved_vars')
