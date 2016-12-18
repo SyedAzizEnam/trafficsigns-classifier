@@ -131,7 +131,7 @@ with tf.Session() as sess:
             for k in range(X_train_gray.shape[0]):
                 distorted_img[i,:,:,0] = distort_data(X_train_gray[i,:,:,0])
             X_train_gray = np.vstack((X_train_gray, distorted_img))
-            y_train = np.stack((y_train, y_train))
+            y_train = np.vstack((y_train, y_train))
             index = np.arange(X_train_gray.shape[0])
         print(X_train_gray.shape, y_train.shape)
         steps_per_epoch = X_train_gray.shape[0] // BATCH_SIZE
