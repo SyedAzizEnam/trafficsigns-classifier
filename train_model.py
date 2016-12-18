@@ -115,16 +115,17 @@ accuracy_op = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
 EPOCHS = 120
 BATCH_SIZE = 128
+TEST_SIZE = X_dev_gray.shape[0]
 with tf.Session() as sess:
     saver = tf.train.Saver()
     sess.run(tf.initialize_all_variables())
     steps_per_epoch = X_train_gray.shape[0] // BATCH_SIZE
     num_examples = steps_per_epoch * BATCH_SIZE
     index = np.arange(X_train_gray.shape[0])
-    dev_index = np.arange(X_dev_gray.shape[0])
+    test_index = np.arange(X_test_gray.shape[0])
     for i in range(EPOCHS):
         np.random.shuffle(index)
-        np.random.shuffle(dev_index)
+        np.random.shuffle(test_index)
         if i==100:
             X_train_gray = distort_data(X_train_gray)
         for step in range(steps_per_epoch):
@@ -138,7 +139,8 @@ with tf.Session() as sess:
         print("Validation loss = {}".format(loss))
         print("Validation accuracy = {}".format(acc))
 
-        test_loss, test_acc = sess.run([loss_op, accuracy_op], feed_dict={x: X_test_gray, y: y_test, keep_prob: 1.0})
+        test_loss, test_acc = sess.run([loss_op, accuracy_op],
+                                        feed_dict={x: X_test_gray[test_index[0:TEST_SIZE]],y: y_test[test_index[0:TEST_SIZE]], keep_prob: 1.0})
 
         print("Test loss = {}".format(test_loss))
         print("Test accuracy = {}".format(test_acc))
