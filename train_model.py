@@ -139,7 +139,7 @@ with tf.Session() as sess:
             train_loss, _ = sess.run([loss_op, train_op], feed_dict={x: batch_x, y: batch_y, keep_prob: 0.5})
         loss, acc = sess.run([loss_op, accuracy_op], feed_dict={x: X_dev_gray, y: y_dev, keep_prob: 1.0})
 
-        print("EPOCH {} ...".format(i+1))
+        print("EPOCH {} ...".format(EPOCH+1))
         print("Train loss = {}".format(train_loss))
         print("Validation loss = {}".format(loss))
         print("Validation accuracy = {}".format(acc))
