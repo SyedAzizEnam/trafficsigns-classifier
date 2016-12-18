@@ -126,13 +126,14 @@ with tf.Session() as sess:
     index = np.arange(X_train_gray.shape[0])
     test_index = np.arange(X_test_gray.shape[0])
     for i in range(EPOCHS):
+        saver.save(sess, 'saved_vars')
         if i==90:
             distorted_img = np.zeros(shape = X_train_gray.shape)
             for k in range(X_train_gray.shape[0]):
                 distorted_img[i,:,:,0] = distort_data(X_train_gray[i,:,:,0])
             X_train_gray = np.vstack((X_train_gray, distorted_img))
             y_train = np.stack((y_train, y_train))
-
+            index = np.arange(X_train_gray.shape[0])
 
         steps_per_epoch = X_train_gray.shape[0] // BATCH_SIZE
         num_examples = steps_per_epoch * BATCH_SIZE
@@ -142,6 +143,7 @@ with tf.Session() as sess:
         for step in range(steps_per_epoch):
             start, end = step*BATCH_SIZE, (step+1)*BATCH_SIZE
             batch_x, batch_y = X_train_gray[index[start:end]], y_train[index[start:end]]
+            print(batch_x, batch_y)
             train_loss, _ = sess.run([loss_op, train_op], feed_dict={x: batch_x, y: batch_y, keep_prob: 0.5})
         loss, acc = sess.run([loss_op, accuracy_op], feed_dict={x: X_dev_gray, y: y_dev, keep_prob: 1.0})
 
