@@ -58,14 +58,13 @@ def distort_data(img):
 ### and split the data into training/validation/testing sets here.
 examples = np.copy(X_train_gray)
 labels = np.copy(y_train)
-for i in range(10):
+for i in range(1):
     distorted_img = np.zeros(shape = examples.shape)
     for k in range(examples.shape[0]):
         distorted_img[i,:,:,0] = distort_data(examples[i,:,:,0])
     X_train_gray = np.vstack((X_train_gray, distorted_img))
     y_train = np.hstack((y_train, labels))
-    print(X_train_gray.shape, y_train.shape)
-X_train_gray , X_dev_gray, y_train, y_dev = train_test_split(X_train_gray, y_train, test_size = 0.01, stratify = y_train)
+X_train_gray , X_dev_gray, y_train, y_dev = train_test_split(X_train_gray, y_train, test_size = 0.05, stratify = y_train)
 y_train, y_dev = preprocess_target(y_train), preprocess_target(y_dev)
 
 ### Define your architecture here.
