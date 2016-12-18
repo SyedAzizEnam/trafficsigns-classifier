@@ -41,20 +41,27 @@ X_train_gray, X_test_gray = preprocess_features(X_train), preprocess_features(X_
 y_test = preprocess_target(y_test)
 
 ### Generate data additional (if you want to!)
-def distort_data(X_train):
+def distort_data(img):
     #Translation
-    examples,row,col,__ = X_train.shape
     t_sample = np.random.uniform(low=-0.1, high=0.1)
     r_sample = np.random.uniform(low=-10, high=10 )
+
     M_t = np.float32([[1,0,math.floor(col*(1+t_sample))],[0,1,math.floor(row*(1+t_sample))]])
     M_r = cv2.getRotationMatrix2D((col//2,row//2),r_sample,1)
-    for i in range(examples):
-        img = cv2.warpAffine(X_train[i,:,:,0],M_t,(col,row))
-        img = cv2.warpAffine(img,M_r,(col,row))
-        X_train[i,:,:,0] = img
-    return X_train
+
+    img = cv2.warpAffine(img,M_t,(col,row))
+    img = cv2.warpAffine(img,M_r,(col,row))
+
+    return img
 
 ### and split the data into training/validation/testing sets here.
+examples = np.copy(X_train_gray)
+for i in range(10):
+    distorted_img = np.zeroes(shape = examples.shape)
+    for k in range(examples.shape[0]):
+        distorted_img[i,:,:,0] = distort_data(examples[i,:,:,0])
+    X_train_gray = np.vstack(X_train_gray, distort_data)
+
 X_train_gray , X_dev_gray, y_train, y_dev = train_test_split(X_train_gray, y_train, test_size = 0.10, stratify = y_train)
 y_train, y_dev = preprocess_target(y_train), preprocess_target(y_dev)
 
@@ -126,7 +133,7 @@ with tf.Session() as sess:
     for i in range(EPOCHS):
         np.random.shuffle(index)
         np.random.shuffle(test_index)
-        if i==100:
+        if i==:
             X_train_gray = distort_data(X_train_gray)
         for step in range(steps_per_epoch):
             start, end = step*BATCH_SIZE, (step+1)*BATCH_SIZE
