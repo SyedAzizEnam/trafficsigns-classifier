@@ -121,7 +121,7 @@ BATCH_SIZE = 128
 TEST_SIZE = X_dev_gray.shape[0]
 best_acc = 0
 threshold = 0
-
+EPOCH = 0
 with tf.Session() as sess:
     saver = tf.train.Saver()
     sess.run(tf.initialize_all_variables())
@@ -150,6 +150,7 @@ with tf.Session() as sess:
         print("Test loss = {}".format(test_loss))
         print("Test accuracy = {}".format(test_acc))
 
+        EPOCH += 1
         if best_acc < acc:
             threshold = 0
             saver.save(sess, 'saved_vars')
