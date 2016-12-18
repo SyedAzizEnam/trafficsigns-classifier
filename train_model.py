@@ -43,7 +43,6 @@ y_test = preprocess_target(y_test)
 ### Generate data additional (if you want to!)
 def distort_data(img):
     #Translation
-    print(img.shape)
     row, col = img.shape
     t_sample = np.random.uniform(low=-0.1, high=0.1)
     r_sample = np.random.uniform(low=-10, high=10 )
@@ -62,7 +61,7 @@ for i in range(10):
     distorted_img = np.zeros(shape = examples.shape)
     for k in range(examples.shape[0]):
         distorted_img[i,:,:,0] = distort_data(examples[i,:,:,0])
-    X_train_gray = np.vstack(X_train_gray, distort_data)
+    X_train_gray = np.vstack((X_train_gray, distort_data))
 
 X_train_gray , X_dev_gray, y_train, y_dev = train_test_split(X_train_gray, y_train, test_size = 0.10, stratify = y_train)
 y_train, y_dev = preprocess_target(y_train), preprocess_target(y_dev)
