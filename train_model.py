@@ -60,7 +60,6 @@ def distort_data(img):
 X_train_gray , X_dev_gray, y_train, y_dev = train_test_split(X_train_gray, y_train, test_size = 0.10, stratify = y_train)
 y_train, y_dev = preprocess_target(y_train), preprocess_target(y_dev)
 
-print(np.stack((y_train, y_train)).shape, y_train.shape)
 
 ### Define your architecture here.
 _, image_height, image_width, color_channels = X_train_gray.shape
@@ -131,7 +130,7 @@ with tf.Session() as sess:
             for k in range(X_train_gray.shape[0]):
                 distorted_img[i,:,:,0] = distort_data(X_train_gray[i,:,:,0])
             X_train_gray = np.vstack((X_train_gray, distorted_img))
-            y_train = np.stack((y_train, y_train))
+            y_train = np.vstack((y_train, y_train))
 
 
         steps_per_epoch = X_train_gray.shape[0] // BATCH_SIZE
