@@ -153,6 +153,7 @@ with tf.Session() as sess:
         EPOCH += 1
         threshold += 1
         if best_acc < acc:
+            best_acc = acc
             threshold = 0
             saver.save(sess, 'saved_vars')
         if threshold == 10:
