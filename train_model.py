@@ -56,15 +56,8 @@ def distort_data(img):
     return img
 
 ### and split the data into training/validation/testing sets here.
-examples = np.copy(X_train_gray)
-labels = np.copy(y_train)
-for i in range(1):
-    distorted_img = np.zeros(shape = examples.shape)
-    for k in range(examples.shape[0]):
-        distorted_img[i,:,:,0] = distort_data(examples[i,:,:,0])
-    X_train_gray = np.vstack((X_train_gray, distorted_img))
-    y_train = np.hstack((y_train, labels))
-X_train_gray , X_dev_gray, y_train, y_dev = train_test_split(X_train_gray, y_train, test_size = 0.05, stratify = y_train)
+
+X_train_gray , X_dev_gray, y_train, y_dev = train_test_split(X_train_gray, y_train, test_size = 0.10, stratify = y_train)
 y_train, y_dev = preprocess_target(y_train), preprocess_target(y_dev)
 
 ### Define your architecture here.
@@ -122,7 +115,7 @@ train_op = opt.minimize(loss_op)
 correct_prediction = tf.equal(tf.argmax(softmax, 1), tf.argmax(y, 1))
 accuracy_op = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
-EPOCHS = 120
+EPOCHS = 40
 BATCH_SIZE = 128
 TEST_SIZE = X_dev_gray.shape[0]
 with tf.Session() as sess:
@@ -135,8 +128,11 @@ with tf.Session() as sess:
     for i in range(EPOCHS):
         np.random.shuffle(index)
         np.random.shuffle(test_index)
-        if i==100:
-            X_train_gray = distort_data(X_train_gray)
+        if i==30:
+            distorted_img = np.zeros(shape = examples.shape)
+            for k in range(X_train_gray.shape[0]):
+                distorted_img[i,:,:,0] = distort_data(examples[i,:,:,0])
+            X_train_gray = distorted_img
         for step in range(steps_per_epoch):
             start, end = step*BATCH_SIZE, (step+1)*BATCH_SIZE
             batch_x, batch_y = X_train_gray[index[start:end]], y_train[index[start:end]]
